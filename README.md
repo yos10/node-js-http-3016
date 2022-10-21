@@ -158,3 +158,5 @@ Using Detected Dockerfile
 executor failed running [/bin/sh -c yarn install --frozen-lockfile]: exit code: 1
 ```
 </details
+
+ビルド速いし、ページが公開されるまでほぼ待ち時間なかった。
