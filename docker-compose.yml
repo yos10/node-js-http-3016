@@ -4,7 +4,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: dev
     tty: true
     ports:
       - 8000:8000
