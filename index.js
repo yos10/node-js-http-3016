@@ -6,17 +6,26 @@ const server = http
     const now = new Date();
     console.info(`[${now}] Requested by ${req.socket.remoteAddress}`);
     res.writeHead(200, {
-      'Content-Type': 'text/html; charset=utf-8'
+      'Content-Type': 'text/html; charset=utf-8',
     });
 
     switch (req.method) {
       case 'GET':
-        if (req.url === '/enquetes/yaki-shabu') {
+        if (req.url === '/') {
+          res.write(
+            '<!DOCTYPE html><html lang="ja"><body>' +
+              '<h1>アンケートフォーム</h1>' +
+              '<a href="/enquetes">アンケート一覧</a>' +
+              '</body></html>'
+          );
+        } else if (req.url === '/enquetes') {
+          res.write(pug.renderFile('./enquetes.pug'));
+        } else if (req.url === '/enquetes/yaki-shabu') {
           res.write(
             pug.renderFile('./form.pug', {
               path: req.url,
               firstItem: '焼き肉',
-              secondItem: 'しゃぶしゃぶ'
+              secondItem: 'しゃぶしゃぶ',
             })
           );
         } else if (req.url === '/enquetes/rice-bread') {
@@ -24,29 +33,35 @@ const server = http
             pug.renderFile('./form.pug', {
               path: req.url,
               firstItem: 'ごはん',
-              secondItem: 'パン'
+              secondItem: 'パン',
             })
           );
         } else if (req.url === '/enquetes/sushi-pizza') {
-          res.write(pug.renderFile('./form.pug', {
-            path: req.url,
-            firstItem: '寿司',
-            secondItem: 'ピザ'
-          }));
+          res.write(
+            pug.renderFile('./form.pug', {
+              path: req.url,
+              firstItem: '寿司',
+              secondItem: 'ピザ',
+            })
+          );
         }
         res.end();
         break;
       case 'POST':
         let rawData = '';
         req
-          .on('data', chunk => {
+          .on('data', (chunk) => {
             rawData += chunk;
           })
           .on('end', () => {
             const answer = new URLSearchParams(rawData);
-            const body = `${answer.get('name')}さんは${answer.get('favorite')}に投票しました`;
+            const body = `${answer.get('name')}さんは${answer.get(
+              'favorite'
+            )}に投票しました`;
             console.info(`[${now}] ${body}`);
-            res.write(`<!DOCTYPE html><html lang="ja"><body><h1>${body}</h1></body></html>`);
+            res.write(
+              `<!DOCTYPE html><html lang="ja"><body><h1>${body}</h1></body></html>`
+            );
             res.end();
           });
         break;
@@ -54,10 +69,10 @@ const server = http
         break;
     }
   })
-  .on('error', e => {
+  .on('error', (e) => {
     console.error(`[${new Date()}] Server Error`, e);
   })
-  .on('clientError', e => {
+  .on('clientError', (e) => {
     console.error(`[${new Date()}] Client Error`, e);
   });
 const port = 8000;
