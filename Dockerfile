@@ -8,5 +8,7 @@ ENV LANG=ja_JP.UTF-8
 ENV TZ=Asia/Tokyo
 WORKDIR /app
 USER node
-COPY . /app
-CMD ["sh", "run.sh"]
+COPY --chown=node:node package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
+COPY --chown=node:node . .
+CMD ["node", "index.js"]
