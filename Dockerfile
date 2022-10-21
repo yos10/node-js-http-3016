@@ -8,3 +8,5 @@ ENV LANG=ja_JP.UTF-8
 ENV TZ=Asia/Tokyo
 WORKDIR /app
 USER node
+COPY . /app
+CMD ["sh", "run.sh"]
