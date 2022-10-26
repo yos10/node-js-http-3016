@@ -18,6 +18,9 @@ const server = http
               '<a href="/enquetes">アンケート一覧</a>' +
               '</body></html>'
           );
+        } else if (req.url === '/health-check') {
+          res.writeHead(200);
+          res.end('Health check information displayed here!');
         } else if (req.url === '/enquetes') {
           res.write(pug.renderFile('./enquetes.pug'));
         } else if (req.url === '/enquetes/yaki-shabu') {

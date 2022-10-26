@@ -5,6 +5,10 @@ RUN locale-gen ja_JP.UTF-8
 RUN localedef -f UTF-8 -i ja_JP ja_JP
 ENV LANG=ja_JP.UTF-8
 ENV TZ=Asia/Tokyo
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+    tini \
+    && rm -rf /var/lib/apt/lists/*
 RUN mkdir /app && chown -R node:node /app
 WORKDIR /app
 USER node
@@ -17,4 +21,5 @@ ENV NODE_ENV=production
 COPY --chown=node:node package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
 COPY --chown=node:node . .
+ENTRYPOINT ["/usr/local/bin/tini", "--"]
 CMD ["node", "index.js"]
