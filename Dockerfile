@@ -18,8 +18,7 @@ ENV NODE_ENV=development
 
 FROM base as prod
 ENV NODE_ENV=production
-COPY --chown=node:node package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+EXPOSE 10000
 COPY --chown=node:node . .
 ENTRYPOINT ["/usr/local/bin/tini", "--"]
-CMD ["node", "index.js"]
+CMD ["sh", "run.sh"]
